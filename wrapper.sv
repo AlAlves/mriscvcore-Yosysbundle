@@ -4,10 +4,6 @@ module rvfi_wrapper (
 	`RVFI_OUTPUTS
 );
 
-
-    (* keep *) `rvformal_rand_reg clk;
-    (* keep *) `rvformal_rand_reg rstn;
-
     // AXI-4 LITE INTERFACE
     (* keep *) `rvformal_rand_reg [31:0] Rdata;
     (* keep *) `rvformal_rand_reg ARready;
@@ -19,7 +15,7 @@ module rvfi_wrapper (
     (* keep *) wire [31:0] ARdata;
     (* keep *) wire [31:0] Wdata;
     (* keep *) wire ARvalid;
-    (* keep *) wire RReady;
+    (* keep *) wire Rready;
     (* keep *) wire AWvalid;
     (* keep *) wire Wvalid;
     (* keep *) wire [2:0] ARprot;
@@ -36,8 +32,8 @@ module rvfi_wrapper (
 
 
     mriscvcore uut (
-        .clk(clk),
-        .rstn(rstn),
+        .clk(clock),
+        .rstn(!reset),
 
         // AXI-4 LITE INTERFACE
         .Rdata(Rdata),
@@ -50,7 +46,7 @@ module rvfi_wrapper (
         .ARdata(ARdata),
         .Wdata(Wdata),
         .ARvalid(ARvalid),
-        .RReady(RReady),
+        .Rready(Rready),
         .AWvalid(AWvalid),
         .Wvalid(Wvalid),
         .ARprot(ARprot),
