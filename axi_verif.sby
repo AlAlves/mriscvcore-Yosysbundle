@@ -1,0 +1,40 @@
+[tasks]
+cvr
+prf
+
+[options]
+cvr: mode cover
+cvr: depth 60
+prf: mode prove
+prf: depth 40
+
+[engines]
+smtbmc
+
+[script]
+verilog_defines -D DEBUGNETS
+verilog_defines -D RISCV_FORMAL
+verilog_defines -D RISCV_FORMAL_NRET=1
+verilog_defines -D RISCV_FORMAL_XLEN=32
+verilog_defines -D RISCV_FORMAL_ILEN=32
+verilog_defines -D RISCV_FORMAL_COMPRESSED
+verilog_defines -D RISCV_FORMAL_ALIGNED_MEM
+
+read_verilog -sv wrapper.sv
+read_verilog @core@/@core@.v
+read_verilog @core@/ALU/ALU.v
+read_verilog @core@/DECO_INSTR/DECO_INSTR.v
+read_verilog @core@/FSM/FSM.v
+read_verilog @core@/IRQ/IRQ.v
+read_verilog @core@/MEMORY_INTERFACE/MEMORY_INTERFACE.v
+read_verilog @core@/MULT/MULT.v
+read_verilog @core@/REG_FILE/REG_FILE.v
+read_verilog @core@/UTILITIES/UTILITY.v
+
+read_verilog -sv -formal axi_verif.sv
+prep -nordff -top testbench
+
+[files]
+axi_verif.sv
+read_verilog @core@/@core@.v
+../../checks/rvfi_macros.vh
